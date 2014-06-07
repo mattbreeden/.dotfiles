@@ -1,0 +1,10 @@
+set editing-mode vi
+set completion-ignore-case on
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set menu-complete-display-prefix on
+
+#This will have it cycle through options, but won't print out all possibilities
+#TAB: menu-complete
+#bind shift-tab to reverse menu complete
+"\e[Z": menu-complete
