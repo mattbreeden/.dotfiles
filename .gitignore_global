@@ -21,3 +21,7 @@ coverage
 # Ctags #
 #########
 tags
+
+# VIM #
+# #####
+.netrwhist
