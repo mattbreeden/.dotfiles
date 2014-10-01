@@ -27,6 +27,7 @@ alias gc='git commit -m '
 alias gh='git h'
 
 # Tmux
+alias tmux='tmux -2'
 alias tks='tmux kill-session'
 alias tls='tmux ls'
 
