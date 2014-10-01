@@ -3,15 +3,15 @@
 
 # Custom bash prompt via kirsle.net/wizards/ps1.html
 # export PS1="\[$(tput bold)\]\[$(tput setaf 7)\]\A>\[$(tput setaf 1)\]\h:\[$(tput setaf 2)\]\W \\$ \[$(tput sgr0)\]"
-# Prompt with git branch on the end
-export PS1="\[$(tput bold)\]\[$(tput setaf 7)\]\A>\[$(tput setaf 1)\]\h:\[$(tput setaf 2)\]\W \$(parse_git_branch)\\$ \[$(tput sgr0)\]"
+# Space added to the end of ~/.rvm/bin/rvm-prompt line:
+# then gemset="${rvm_gemset_separator:-"@"}${ruby_string##*${rvm_gemset_separator:-"@"}} "
 
+export PS1="\[$(tput bold)\]\[$(tput setaf 7)\]\A>\[$(tput setaf 1)\]\h:\[$(tput setaf 2)\]\W \$(parse_git_branch)\\[$(tput setaf 4)\]\$(~/.rvm/bin/rvm-prompt g)\[$(tput setaf 2)\]\$ \[$(tput sgr0)\]"
+
+ #\[$(tput setaf 4)\]\$(~/.rvm/bin/rvm-prompt g)
 export CLICOLOR=1
 
 export LSCOLORS=GxFxCxDxBxegedabagaced
-
-# ln -s /tmp/.s.PGSQL.5432 /var/pgsql_socket/.s.PGSQL.5432
-# ln -s /tmp/.s.PGSQL.5432.lock /var/pgsql_socket/.s.PGSQL.5432.lock 
 
 # Show PWD in iTerm tabs
 export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
