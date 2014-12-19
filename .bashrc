@@ -31,6 +31,9 @@ alias tmux='tmux -2'
 alias tks='tmux kill-session'
 alias tls='tmux ls'
 
+#Rubymotion
+rr='reattach-to-user-namespace -l rake'  
+
 #Add RVM to PATH for scripting
 PATH=$PATH:/usr/local/rvm/bin
 ### Added by the Heroku Toolbelt
@@ -42,4 +45,3 @@ export PATH="/usr/local/bin:$PATH"
 # BEGIN Ruboto setup
 source ~/.rubotorc
 # END Ruboto setup
-
