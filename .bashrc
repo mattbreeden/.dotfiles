@@ -32,7 +32,7 @@ alias tks='tmux kill-session'
 alias tls='tmux ls'
 
 #Rubymotion
-rr='reattach-to-user-namespace -l rake'  
+alias rr='reattach-to-user-namespace -l rake'  
 
 #Add RVM to PATH for scripting
 PATH=$PATH:/usr/local/rvm/bin
