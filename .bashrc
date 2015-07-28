@@ -26,8 +26,9 @@ alias gc='git commit -m '
 #git h is set up in .gitconfig
 alias gh='git h'
 
+alias mysqlstart='/usr/local/Cellar/mysql/5.6.22/support-files/mysql.server start'
+
 # Tmux
-alias tmux='tmux -2'
 alias tks='tmux kill-session'
 alias tls='tmux ls'
 
@@ -40,7 +41,6 @@ PATH=$PATH:/usr/local/rvm/bin
 export PATH="/usr/local/heroku/bin:$PATH"
 #for Homebrew
 export PATH="/usr/local/bin:$PATH"
-
 
 # BEGIN Ruboto setup
 source ~/.rubotorc

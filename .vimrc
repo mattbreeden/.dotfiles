@@ -38,7 +38,9 @@ au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Capfile,Gu
 autocmd BufEnter *.py setlocal softtabstop=4 shiftwidth=4
 
 set t_Co=256
-colorscheme molokai
+let base16colorspace=256  " Access colors present in 256 colorspace
+colorscheme base16-tomorrow
+" colorscheme molokai
 
 au InsertEnter * set cursorline
 au InsertLeave * set nocursorline
@@ -63,6 +65,7 @@ imap <c-s> <Esc><c-s>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMixed'
 nmap <silent> <leader>b :TagbarToggle<CR>
+nnoremap <leader>p :CtrlPTag<cr>
 
 " Vimux
 let g:VimuxUseNearestPane = 1
@@ -92,7 +95,7 @@ function! PromoteToLet()
   :normal ==
 endfunction
 :command! PromoteToLet :call PromoteToLet()
-:map <Leader>p :PromoteToLet<cr>
+:map <Leader><C-p> :PromoteToLet<cr>
 
 " Mustache/Handlebars shortcuts
 let g:mustache_abbreviations = 1
@@ -119,9 +122,22 @@ let g:rails_gem_projections = {
       \     "template": "class %SDecorator < Draper::Decorator\nend"
       \   }
       \ },
+      \ "fabrication": {
+      \   "spec/fabricators/*_fabricator.rb": {
+      \     "command": "fabricator",
+      \     "related": "app/models/%s.rb",
+      \     "template": "Fabricator(:%S) do\nend"
+      \   }
+      \ },
       \ "factory_girl_rails": {
       \   "spec/factories.rb": {
       \     "command": "factories",
       \     "template": "FactoryGirl.define do\nend"
       \   }
       \ }}
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:ycm_key_list_select_completion=[]
+let g:ycm_key_list_previous_completion=[]
