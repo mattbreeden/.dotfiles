@@ -6,6 +6,7 @@
 --type-set=c=.c,.cpp,.ino,.pde,.h
 --ignore-file=is:tags
 --ignore-dir=vendor
+--ignore-dir=venv
 --ignore-dir=log
 --ignore-dir=.bundle
 --ignore-dir=tmp
