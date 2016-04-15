@@ -7,14 +7,22 @@ mkcd() {
         fi
 }
 
+# TODO: Make this work without re-sourcing
+cd() {
+      if [ -d "${@: -1}" ] ; then
+          builtin cd $*;
+      else
+          $EDITOR "${@: -1}"
+      fi
+}
+
 bind -r '\C-s'
 stty -ixon
 
 alias l='ls -A'
-alias lah='ls -lah'
+alias lah='ls -lAh'
 alias lf='ls -CF'
 
-alias cd..='cd ..'
 alias ..='cd ..'
 alias cls='clear'
 
@@ -26,14 +34,19 @@ alias gc='git commit -m '
 #git h is set up in .gitconfig
 alias gh='git h'
 
-alias mysqlstart='/usr/local/Cellar/mysql/5.6.22/support-files/mysql.server start'
+# Python Virtualenv aliases
+alias vc='virtualenv venv'
+alias va='source venv/bin/activate'
+
+alias pyclean="find . -name '*.pyc' -delete"
+alias pimp="python manage.py"
 
 # Tmux
 alias tks='tmux kill-session'
 alias tls='tmux ls'
 
-#Rubymotion
-alias rr='reattach-to-user-namespace -l bundle exec rake'  
+# Scheme with niceties
+alias scheme="rlwrap -r -c -f ~/.config/mit_scheme_bindings.txt scheme"
 
 #Add RVM to PATH for scripting
 PATH=$PATH:/usr/local/rvm/bin
@@ -42,6 +55,5 @@ export PATH="/usr/local/heroku/bin:$PATH"
 #for Homebrew
 export PATH="/usr/local/bin:$PATH"
 
-# BEGIN Ruboto setup
-source ~/.rubotorc
-# END Ruboto setup
+[[ -s "/usr/local/etc/bash_completion.d/git-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-completion.bash
+[[ -s "/usr/local/etc/bash_completion.d/git-flow-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-flow-completion.bash
