@@ -49,6 +49,7 @@ autocmd BufEnter *.rb,*.erb setlocal softtabstop=2 shiftwidth=2
 set t_Co=256
 let base16colorspace=256  " Access colors present in 256 colorspace
 colorscheme base16-tomorrow
+set background=dark
 " colorscheme molokai
 
 au InsertEnter * set cursorline
@@ -185,7 +186,7 @@ let g:NERDSpaceDelims=1
 let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 let g:ycm_key_list_select_completion=['<TAB>', '<DOWN>']
 let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
 " TODO: ugh
