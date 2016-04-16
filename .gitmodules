@@ -3,7 +3,7 @@
 	url = git@github.com:mileszs/ack.vim.git
 [submodule ".vim/bundle/ctrlp.vim"]
 	path = .vim/bundle/ctrlp.vim
-	url = git@github.com:kien/ctrlp.vim.git
+	url = git@github.com:ctrlpvim/ctrlp.vim.git
 [submodule ".vim/bundle/emmet-vim"]
 	path = .vim/bundle/emmet-vim
 	url = https://github.com/mattn/emmet-vim.git
@@ -18,7 +18,7 @@
 	url = git@github.com:scrooloose/nerdcommenter.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/bundle/tagbar
-	url = git://github.com/majutsushi/tagbar
+	url = git@github.com:majutsushi/tagbar.git
 [submodule ".vim/bundle/vim-bundler"]
 	path = .vim/bundle/vim-bundler
 	url = git://github.com/tpope/vim-bundler.git
@@ -82,3 +82,30 @@
 [submodule ".vim/bundle/YouCompleteMe"]
 	path = .vim/bundle/YouCompleteMe
 	url = git@github.com:Valloric/YouCompleteMe.git
+[submodule ".vim/bundle/editorconfig-vim"]
+	path = .vim/bundle/editorconfig-vim
+	url = git@github.com:editorconfig/editorconfig-vim.git
+[submodule ".vim/bundle/slimv"]
+	path = .vim/bundle/slimv
+	url = git@github.com:kovisoft/slimv.git
+[submodule ".vim/bundle/vim-commentary"]
+	path = .vim/bundle/vim-commentary
+	url = git://github.com/tpope/vim-commentary.git
+[submodule ".vim/bundle/vim-easymotion"]
+	path = .vim/bundle/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion
+[submodule ".vim/bundle/vim-elixir"]
+	path = .vim/bundle/vim-elixir
+	url = https://github.com/elixir-lang/vim-elixir.git
+[submodule ".vim/bundle/vim-flake8"]
+	path = .vim/bundle/vim-flake8
+	url = git@github.com:nvie/vim-flake8.git
+[submodule ".vim/bundle/vim-phoenix"]
+	path = .vim/bundle/vim-phoenix
+	url = git@github.com:avdgaag/vim-phoenix.git
+[submodule ".vim/bundle/vim-projectionist"]
+	path = .vim/bundle/vim-projectionist
+	url = git://github.com/tpope/vim-projectionist.git
+[submodule ".vim/bundle/vim-react-snippets"]
+	path = .vim/bundle/vim-react-snippets
+	url = git@github.com:justinj/vim-react-snippets.git
