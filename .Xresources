@@ -1,3 +1,7 @@
+URxvt.perl-ext-common: default,clipboard
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.iso14755: False
+
 URxvt*font: xft:menlo:size=10,xft:monaco:size=10
 URxvt*scrollBar: False
 
