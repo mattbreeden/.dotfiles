@@ -63,6 +63,7 @@ alias pimp="python manage.py"
 # Tmux
 alias tks='tmux kill-session'
 alias tls='tmux ls'
+alias tas='tmux attach-session -t'
 
 # Scheme with niceties
 alias scheme="rlwrap -r -c -f ~/.config/mit_scheme_bindings.txt scheme"
