@@ -22,4 +22,7 @@ coverage
 #########
 tags
 
+# Python #
+#########
+*.pyc
 venv
