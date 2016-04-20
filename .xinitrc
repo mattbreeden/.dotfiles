@@ -1,4 +1,5 @@
 #!/bin/sh
+exec i3
 
 # /etc/X11/xinit/xinitrc
 #
