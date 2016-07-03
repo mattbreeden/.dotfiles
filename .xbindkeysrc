@@ -45,5 +45,20 @@
     m:0x0 + c:72
     F6 
 
+#Toggle Mute
+"amixer set Master toggle"
+    m:0x0 + c:74
+    F8 
+
+#Volume Up
+"amixer set Master 5%+"
+    m:0x0 + c:76
+    F10 
+
+#Volume Down
+"amixer set Master 5%-"
+    m:0x0 + c:75
+    F9 
+
 #
 # End of xbindkeys configuration
