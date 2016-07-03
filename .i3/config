@@ -151,3 +151,4 @@ bar {
 }
 
 exec_always feh --bg-scale /home/matt/Pictures/wallpaper.jpg
+bindsym $mod+Shift+x exec "i3lock -g"
