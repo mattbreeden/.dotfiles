@@ -145,4 +145,9 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         status_command i3blocks
+    colors {
+        background #2f343f
+    }
 }
+
+exec_always feh --bg-scale /home/matt/Pictures/wallpaper.jpg
