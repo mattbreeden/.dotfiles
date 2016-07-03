@@ -38,6 +38,7 @@ cd() {
 bind -r '\C-s'
 stty -ixon
 
+alias ls='ls --color'
 alias l='ls -A'
 alias lah='ls -lAh'
 alias lf='ls -CF'
@@ -57,10 +58,13 @@ alias gh='git h'
 alias vc='virtualenv venv'
 alias va='source venv/bin/activate'
 
+source /usr/local/bin/virtualenvwrapper.sh
+
 alias pyclean="find . -name '*.pyc' -delete"
 alias pimp="python manage.py"
 
 # Tmux
+alias tmux='tmux -2' # Force 256 color mode
 alias tks='tmux kill-session'
 alias tls='tmux ls'
 alias tas='tmux attach-session -t'
