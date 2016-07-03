@@ -8,4 +8,9 @@ if [ -s ~/.Xmodmap ]; then
     xmodmap ~/.Xmodmap
 fi
 
+
+# Disable touchpad while typing
+syndaemon -i 1 -K -d
+xbindkeys
+
 exec i3
