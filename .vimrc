@@ -189,9 +189,10 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 let g:ycm_key_list_select_completion=['<TAB>', '<DOWN>']
 let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
-" TODO: ugh
+
 "let g:ycm_add_preview_to_completeopt=1
-"let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_autoclose_preview_window_after_insertion=1
+let g:ycm_autoclose_preview_window_after_completion=1
 
 let g:EasyMotion_smartcase = 1
 map <Leader>j <Plug>(easymotion-j)
