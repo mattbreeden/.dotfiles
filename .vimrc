@@ -30,8 +30,8 @@ set scrolloff=3
 set wrap
 set nu
 set expandtab
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 
 " case insensitive / changes to
 " case sensitive with capital letter
@@ -44,7 +44,7 @@ set colorcolumn=80
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Capfile,Guardfile,config.ru,.railsrc,.irbrc,.pryrc} set ft=ruby
 
 " 4 spaces for TAB in Python files
-autocmd BufEnter *.rb,*.erb setlocal softtabstop=2 shiftwidth=2
+autocmd BufEnter *.py setlocal softtabstop=4 shiftwidth=4
 
 set t_Co=256
 let base16colorspace=256  " Access colors present in 256 colorspace
