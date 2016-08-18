@@ -38,7 +38,8 @@ sudo mv git-completion.bash /usr/local/etc/bash_completion.d/
 
 install i3block scripts from https://github.com/Anachron/i3blocks or git@github.com:mattbreeden/i3blocks.git(branch memory/swap-available) if my PR doesn't get merged
 apt-get install bc
-move battery, memory, and cpu
+apt-get install acpi
+move memory and cpu
 
 install languages
 
