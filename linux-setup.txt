@@ -3,11 +3,13 @@ Wherein I document exactly how to re-setup my system after ruining it.
 In no real order after the first couple
 
 apt-get update and apt get upgrade
-apt-get install git vim curl
+apt-get install git vim curl man-db
 apt-get install rxvt-unicode(-256color?)
 
 Clone in dotfiles.
 Symlink all (relevant) files from .dotfiles into home folder
+
+setup ssh (also on github) or copy in existing key
 
 copy clipboard file into /usr/lib/urxvt/perl
 apt-get install xclip
@@ -28,11 +30,20 @@ enable utf-8 locale
 this is a huge pain sometimes, make sure to restart because apparently some changes
 only take affect after doing so
 
-install i3bar scripts from 
+sudo mkdir -p /usr/local/etc/bash_completion.d
+curl https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash > git-flow-completion.bash
+sudo mv git-flow-completion.bash /usr/local/etc/bash_completion.d/
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > git-completion.bash
+sudo mv git-completion.bash /usr/local/etc/bash_completion.d/
+
+install i3block scripts from https://github.com/Anachron/i3blocks or git@github.com:mattbreeden/i3blocks.git(branch memory/swap-available) if my PR doesn't get merged
+apt-get install bc
+move battery, memory, and cpu
+
+install languages
 
 misc apps:
 apt-get install deluge
 sudo apt-get install software-properties-common
 sudo apt-get update
 apt-get install zeal - install desired docs
-install languages
