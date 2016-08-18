@@ -6,14 +6,11 @@ BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
 # Custom bash prompt via kirsle.net/wizards/ps1.html
 # export PS1="\[$(tput bold)\]\[$(tput setaf 7)\]\A>\[$(tput setaf 1)\]\h:\[$(tput setaf 2)\]\W \\$ \[$(tput sgr0)\]"
 # Prompt with git branch on the end
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
 function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
-export PS1="\[$(tput setaf 7)\]\A\[$(tput setaf 1)\]❯\[$(tput setaf 3)\]❯\[$(tput setaf 2)\]❯ \[$(tput setaf 1)\]\h:\[$(tput setaf 2)\]\W \$(parse_git_branch)\\[$(tput setaf 4)\]\$(~/.rvm/bin/rvm-prompt g)\[$(tput setaf 2)\]$ \[$(tput sgr0)\]"
- #\[$(tput setaf 4)\]\$(~/.rvm/bin/rvm-prompt g)
+export PS1="\[$(tput setaf 7)\]\A\[$(tput setaf 1)\]❯\[$(tput setaf 3)\]❯\[$(tput setaf 2)\]❯ \[$(tput setaf 1)\]\u:\[$(tput setaf 2)\]\W \$(parse_git_branch)\\[$(tput setaf 4)\]\[$(tput setaf 2)\]$ \[$(tput sgr0)\]"
 
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
@@ -72,14 +69,8 @@ alias tas='tmux attach-session -t'
 # Scheme with niceties
 alias scheme="rlwrap -r -c -f ~/.config/mit_scheme_bindings.txt scheme"
 
-#Add RVM to PATH for scripting
-PATH=$PATH:/usr/local/rvm/bin
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
 #for Homebrew
 export PATH="/usr/local/bin:$PATH"
 
 [[ -s "/usr/local/etc/bash_completion.d/git-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-completion.bash
 [[ -s "/usr/local/etc/bash_completion.d/git-flow-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-flow-completion.bash
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

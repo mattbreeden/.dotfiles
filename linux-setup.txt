@@ -19,8 +19,6 @@ install chrome
 
 install tig from source at: github.com/jonas/tig 
 
-install rvm maybe (Should probably delete this and the rvm references in bashrc/profile)
-
 install python 2.7
 apt-get install python-pip
 pip install --upgrade pip
