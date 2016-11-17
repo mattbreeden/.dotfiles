@@ -48,3 +48,6 @@ apt-get install deluge
 sudo apt-get install software-properties-common
 sudo apt-get update
 apt-get install zeal - install desired docs
+apt-get install ranger
+apt-get install dtrx
+apt-get install zathura
