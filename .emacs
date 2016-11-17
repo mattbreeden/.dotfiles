@@ -32,7 +32,7 @@
 (setq require-final-newline t)
 
 (global-linum-mode t)
-(setq linum-format "%4d \u2502 ")
+(setq linum-format "%3d\u2502")
 
 ; (load-theme 'base16-tomorrow-night t)
 
@@ -43,7 +43,18 @@
 (defun save-all () (interactive) (save-some-buffers t))
 (global-set-key (kbd "C-s") 'save-all)
 
-; need to be defined before evil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Evil mode config
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq evil-want-C-u-scroll t)
+
+(add-hook 'evil-insert-state-entry-hook (lambda () (hl-line-mode +1)))
+(add-hook 'evil-insert-state-exit-hook (lambda () (hl-line-mode -1)))
+
+; need to be defined before evil and sometimes breaks other
+; evil things, so put it RIGHT before evil
 (require 'evil-leader)
 (global-evil-leader-mode)
 (evil-leader/set-leader ",")
@@ -57,16 +68,6 @@
 
 (require 'evil-matchit)
 (global-evil-matchit-mode 1)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;
-; Evil mode config
-;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq evil-want-C-u-scroll t)
-
-(add-hook 'evil-insert-state-entry-hook (lambda () (hl-line-mode +1)))
-(add-hook 'evil-insert-state-exit-hook (lambda () (hl-line-mode -1)))
 
 ; order is important
 (require 'evil)
