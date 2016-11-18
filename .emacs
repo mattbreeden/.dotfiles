@@ -19,20 +19,65 @@
     (package-refresh-contents))
 (package-initialize)
 
-(ensure-package-installed 
+(ensure-package-installed
   'base16-theme
   'evil
   'evil-leader
   'evil-matchit
   'evil-nerd-commenter
   'evil-surround
+  'helm
+  'projectile
+  'fiplr
+  'fill-column-indicator
   'key-chord
   'navigate)
 
+(menu-bar-mode -1)
+(setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
+(setq scroll-conservatively 1)
+; 20MB memory before calling GC
+(setq gc-cons-threshold 20000000)
+; store backups/auto-saves to /tmp
+(setq backup-directory-alist
+  `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+  `((".*" ,temporary-file-directory t)))
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+; treat camelCase words as separate words
+(add-hook 'prog-mode-hook 'subword-mode)
+; always follow symlinks
+(setq vc-follow-symlinks t)
+; When saving a file in a directory that doesn't exist, offer
+; to (recursively) create the file's parent directories
+(add-hook 'before-save-hook
+  (lambda ()
+    (when buffer-file-name
+      (let ((dir (file-name-directory buffer-file-name)))
+        (when (and (not (file-exists-p dir))
+                   (y-or-n-p (format "Directory %s does not exist. Create it?" dir)))
+        (make-directory dir t))))))
+; human readable sizes in dired
+(setq-default dired-listing-switches "-alh")
+; ask y/n instead of yes/no
+(fset 'yes-or-no-p 'y-or-n-p)
+; auto-refresh buffer when file changes
+(global-auto-revert-mode t)
 
-(global-linum-mode t)
-(setq linum-format "%3d\u2502")
+(show-paren-mode t)
+(setq show-paren-delay 0)
+
+(linum-mode)
+(setq linum-format "%2d\u2502")
+(ensure-package-installed 'linum-relative)
+(setq linum-relative-format "%3s\u2502")
+(setq linum-relative-current-symbol "")
+(linum-relative-global-mode)
+
+(add-hook 'after-change-major-mode-hook 'fci-mode)
+(setq-default fill-column 80)
+; (global-fci-mode-1)
 
 ; (load-theme 'base16-tomorrow-night t)
 
@@ -60,6 +105,9 @@
 (evil-leader/set-leader ",")
 (evil-leader/set-key
   "h" 'help
+  "f" 'fiplr-find-file
+  "e" 'dired
+  "p" 'helm-projectile-switch-project
   "ci" 'evilnc-comment-or-uncomment-lines
   "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
   "cc" 'evilnc-copy-and-comment-lines
@@ -94,3 +142,44 @@
 (require 'evil-surround)
 (global-evil-surround-mode 1)
 (require 'navigate)
+
+(global-set-key (kbd "C-p") 'helm-projectile-find-file)
+(define-key evil-normal-state-map (kbd "C-p") 'helm-projectile-find-file)
+(define-key evil-visual-state-map (kbd "C-p") 'helm-projectile-find-file)
+
+(define-key evil-normal-state-map [escape] 'keyboard-quit)
+(define-key evil-visual-state-map [escape] 'keyboard-quit)
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+(defalias 'Ex 'dired)
+(defalias 'ex 'dired)
+
+(add-hook 'dired-mode-hook
+  (lambda ()
+    ;; (define-key dired-mode-map (kbd "C-p") 'helm-projectile-find-file)
+    (define-key evil-normal-state-local-map (kbd "-") 'dired-up-directory)
+    (define-key evil-normal-state-local-map (kbd "d") 'dired-create-directory)
+    (define-key evil-normal-state-local-map (kbd "%") 'find-file)))
+
+(projectile-global-mode)
+(setq projectile-switch-project-action 'projectile-dired)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (fiplr navigate linum-relative key-chord helm-projectile fill-column-indicator evil-surround evil-nerd-commenter evil-matchit evil-leader base16-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
