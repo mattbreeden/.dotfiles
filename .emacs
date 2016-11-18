@@ -28,6 +28,7 @@
   'evil-surround
   'helm
   'projectile
+  'helm-projectile
   'fiplr
   'fill-column-indicator
   'key-chord
