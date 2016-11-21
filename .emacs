@@ -38,10 +38,10 @@
   ;; 'racket-mode
   ;; 'slime
   'helm-projectile
-  'fiplr
   'fill-column-indicator
   'key-chord
-  'navigate)
+  'navigate
+  'rainbow-mode)
 
 (menu-bar-mode -1)
 (setq-default indent-tabs-mode nil)
@@ -89,7 +89,7 @@
 (setq-default fill-column 80)
 ; (global-fci-mode-1)
 
-; (load-theme 'base16-tomorrow-night t)
+(load-theme 'base16-tomorrow-night t)
 
 (require 'key-chord)
 (setq key-chord-two-keys-delay 0.5)
@@ -117,7 +117,6 @@
 (evil-leader/set-leader ",")
 (evil-leader/set-key
   "h" 'help
-  "f" 'fiplr-find-file
   "e" 'dired
   "p" 'helm-projectile-switch-project
   "ci" 'evilnc-comment-or-uncomment-lines
@@ -174,6 +173,7 @@
   (lambda ()
     ;; (define-key dired-mode-map (kbd "C-p") 'helm-projectile-find-file)
     (define-key evil-normal-state-local-map (kbd "G") 'evil-goto-line)
+    (define-key evil-normal-state-local-map (kbd "?") 'evil-search-backward)
     (define-key evil-normal-state-local-map (kbd "-") 'dired-up-directory)
     (define-key evil-normal-state-local-map (kbd "d") 'dired-create-directory)
     (define-key evil-normal-state-local-map (kbd "%") 'find-file)))
@@ -184,6 +184,9 @@
 (helm-projectile-on)
 
 (elpy-enable)
+(add-hook 'elpy-mode-hook
+    (lambda ()
+      (highlight-indentation-mode 0)))
 
 (defun buffer-local-tab-complete ()
   "Make `tab-always-indent' a buffer-local variable and set it to 'complete."
