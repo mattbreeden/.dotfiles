@@ -3,6 +3,7 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
+(add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
 
 (defun ensure-package-installed (&rest packages)
   "Assure every package is installed, ask for installation if it’s not.
@@ -21,13 +22,21 @@
 
 (ensure-package-installed
   'base16-theme
+  'company
+  'elpy
   'evil
   'evil-leader
   'evil-matchit
   'evil-nerd-commenter
   'evil-surround
+  'evil-cleverparens
   'helm
+  'rainbow-delimiters
+  ;; 'paredit
   'projectile
+  'geiser
+  ;; 'racket-mode
+  ;; 'slime
   'helm-projectile
   'fiplr
   'fill-column-indicator
@@ -89,6 +98,8 @@
 (defun save-all () (interactive) (save-some-buffers t))
 (global-set-key (kbd "C-s") 'save-all)
 
+(require 'company)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ; Evil mode config
@@ -129,8 +140,8 @@
 
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
-(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
-(setq evil-emacs-state-modes nil)
+;; (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
+;; (setq evil-emacs-state-modes nil)
 
 ; allow RET/space to be useable in other modes even when in evil mode
 (defun custom-move-key (keymap-from keymap-to key)
@@ -162,6 +173,7 @@
 (add-hook 'dired-mode-hook
   (lambda ()
     ;; (define-key dired-mode-map (kbd "C-p") 'helm-projectile-find-file)
+    (define-key evil-normal-state-local-map (kbd "G") 'evil-goto-line)
     (define-key evil-normal-state-local-map (kbd "-") 'dired-up-directory)
     (define-key evil-normal-state-local-map (kbd "d") 'dired-create-directory)
     (define-key evil-normal-state-local-map (kbd "%") 'find-file)))
@@ -170,3 +182,30 @@
 (setq projectile-switch-project-action 'projectile-dired)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
+
+(elpy-enable)
+
+(defun buffer-local-tab-complete ()
+  "Make `tab-always-indent' a buffer-local variable and set it to 'complete."
+  (make-local-variable 'tab-always-indent)
+    (setq tab-always-indent 'complete))
+
+;; (add-hook 'racket-mode-hook
+;;   (lambda ()
+;;     ;; (paredit-mode)
+;;     (smartparens-mode)
+;;     (evil-cleverparens-mode)
+;;     (buffer-local-tab-complete)
+;;     (evil-leader/set-key
+;;       "r" 'racket-run)))
+
+(setq geiser-active-implementations '(mit))
+(add-hook 'geiser-mode-hook
+  (lambda ()
+    ;; (paredit-mode)
+    (smartparens-mode)
+    (evil-cleverparens-mode)
+    (geiser-smart-tab-mode)
+    ;; (evil-leader/set-key
+    ;;   "r" 'racket-run))
+    ))
