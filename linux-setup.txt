@@ -4,7 +4,7 @@ In no real order after the first couple
 
 apt-get update and apt get upgrade
 apt-get install git vim curl man-db
-apt-get install rxvt-unicode(-256color?)
+apt-get install rxvt-unicode-256color
 
 Clone in dotfiles.
 Symlink all (relevant) files from .dotfiles into home folder
