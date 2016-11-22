@@ -184,6 +184,23 @@
     (lambda ()
       (highlight-indentation-mode 0)))
 
+;; insert matches instead of requiring them to be selected
+(setq company-frontends
+    '(company-pseudo-tooltip-unless-just-one-frontend
+        company-preview-frontend company-echo-metadata-frontend))
+(defun on-off-fci-before-company(command)
+  (when (string= "show" command)
+    (turn-off-fci-mode))
+  (when (string= "hide" command)
+    (turn-on-fci-mode)))
+(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+
+(eval-after-load 'company
+  '(progn
+     (define-key company-active-map (kbd "C-n") 'company-complete-common-or-cycle)
+     (define-key company-active-map (kbd "C-p") 'company-select-previous)
+     ))
+
 (defun buffer-local-tab-complete ()
   "Make `tab-always-indent' a buffer-local variable and set it to 'complete."
   (make-local-variable 'tab-always-indent)
