@@ -24,6 +24,7 @@
   'base16-theme
   'company
   'elpy
+  'editorconfig
   'evil
   'evil-leader
   'evil-matchit
@@ -86,6 +87,9 @@
 ; (global-fci-mode-1)
 
 (load-theme 'base16-tomorrow-night t)
+
+(require 'editorconfig)
+(editorconfig-mode 1)
 
 (require 'key-chord)
 (setq key-chord-two-keys-delay 0.5)
