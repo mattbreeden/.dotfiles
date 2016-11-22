@@ -78,12 +78,8 @@
 (show-paren-mode t)
 (setq show-paren-delay 0)
 
-(linum-mode)
+(global-linum-mode t)
 (setq linum-format "%2d\u2502")
-(ensure-package-installed 'linum-relative)
-(setq linum-relative-format "%3s\u2502")
-(setq linum-relative-current-symbol "")
-(linum-relative-global-mode)
 
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 (setq-default fill-column 80)
