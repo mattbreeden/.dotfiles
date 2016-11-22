@@ -87,6 +87,8 @@
 ; (global-fci-mode-1)
 
 (load-theme 'base16-tomorrow-night t)
+; this renders incorrect in terminal vim
+(add-to-list 'default-frame-alist '(background-color . "black"))
 
 (require 'editorconfig)
 (editorconfig-mode 1)
