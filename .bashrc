@@ -23,15 +23,6 @@ mkcd() {
         fi
 }
 
-# TODO: Make this work without re-sourcing
-cd() {
-      if [ -d "${@: -1}" ] ; then
-          builtin cd $*;
-      else
-          $EDITOR "${@: -1}"
-      fi
-}
-
 bind -r '\C-s'
 stty -ixon
 

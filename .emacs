@@ -24,6 +24,7 @@
   'base16-theme
   'company
   'elpy
+  'editorconfig
   'evil
   'evil-leader
   'evil-matchit
@@ -88,7 +89,18 @@
 (setq-default fill-column 80)
 ; (global-fci-mode-1)
 
+; write directory after buffer name
+(setq-default mode-line-buffer-identification
+              (let ((orig  (car mode-line-buffer-identification)))
+                `(:eval (cons (concat ,orig (abbreviate-file-name default-directory))
+                                                            (cdr mode-line-buffer-identification)))))
+
 (load-theme 'base16-tomorrow-night t)
+; this renders incorrect in terminal vim
+(add-to-list 'default-frame-alist '(background-color . "black"))
+
+(require 'editorconfig)
+(editorconfig-mode 1)
 
 (require 'key-chord)
 (setq key-chord-two-keys-delay 0.5)
