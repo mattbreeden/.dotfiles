@@ -37,6 +37,7 @@
   'geiser
   ;; 'racket-mode
   ;; 'slime
+  'smooth-scrolling
   'helm-projectile
   'fill-column-indicator
   'key-chord
@@ -46,7 +47,8 @@
 (menu-bar-mode -1)
 (setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
-(setq scroll-conservatively 1)
+(smooth-scrolling-mode)
+(setq smooth-scroll-margin 5)
 ; 20MB memory before calling GC
 (setq gc-cons-threshold 20000000)
 ; store backups/auto-saves to /tmp
