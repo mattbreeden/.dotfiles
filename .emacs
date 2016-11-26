@@ -36,7 +36,8 @@
   'projectile
   'geiser
   ;; 'racket-mode
-  ;; 'slime
+  'slime
+  'slime-company
   'smooth-scrolling
   'helm-projectile
   'fill-column-indicator
@@ -115,7 +116,6 @@
 (evil-leader/set-leader ",")
 (evil-leader/set-key
   "h" 'help
-  "e" 'dired
   "p" 'helm-projectile-switch-project
   "ci" 'evilnc-comment-or-uncomment-lines
   "cl" 'evilnc-quick-comment-or-uncomment-to-the-line
@@ -227,3 +227,105 @@
     ;; (evil-leader/set-key
     ;;   "r" 'racket-run))
     ))
+
+
+(defun slime-eval-last-defun-in-repl (prefix)
+    (interactive "P")
+    (let ((expr (slime-defun-at-point))
+          (buffer-name (buffer-name (current-buffer)))
+          (new-package (slime-current-package))
+          (old-package (slime-lisp-package))
+          (slime-repl-suppress-prompt t)
+          (yank-back nil))
+      (with-current-buffer (slime-output-buffer)
+        (unless (eq (current-buffer) (window-buffer))
+          (pop-to-buffer (current-buffer) t))
+        (goto-char (point-max))
+        ;; Kill pending input in the REPL
+        (when (< (marker-position slime-repl-input-start-mark) (point))
+          (kill-region slime-repl-input-start-mark (point))
+          (setq yank-back t))
+        (unwind-protect
+            (progn
+              (insert-before-markers (format "\n;;; from %s\n" buffer-name))
+              (when new-package
+                (slime-repl-set-package new-package))
+              (let ((slime-repl-suppress-prompt nil))
+                (slime-repl-insert-prompt))
+              (insert expr)
+              (slime-repl-return))
+          (unless (or t (equal (slime-lisp-package) old-package))
+            ;; Switch back.
+            (slime-repl-set-package old-package)
+            (let ((slime-repl-suppress-prompt nil))
+              (slime-repl-insert-prompt))))
+        ;; Put pending input back.
+        (when yank-back
+                  (yank)))))
+
+(setq inferior-lisp-program "sbcl")
+(setq slime-contribs '(slime-fancy))
+(slime-setup '(slime-fancy slime-company))
+
+(setq slime-eval-comment-fmt ";=> ")
+
+(defun delete-eval-comments ()
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (flush-lines (concat "^" slime-eval-comment-fmt))))
+
+(defun on-eval-comment-line ()
+  (save-excursion
+    (search-forward slime-eval-comment-fmt (+ (point) (length slime-eval-comment-fmt)) 0)))
+
+(defun insert-lisp-comment-on-new-line (comment)
+  (when (on-eval-comment-line) (kill-whole-line))
+  (newline)
+  (previous-line)
+  (insert ";=> ")
+  (insert comment))
+
+(defun slime-eval-print-sexp ()
+  (interactive)
+  (setq comment (cadr (slime-eval `(swank:eval-and-grab-output ,(slime-last-expression)))))
+  (save-excursion
+    (end-of-defun)
+    (insert-lisp-comment-on-new-line comment)))
+
+(defun slime-eval-print-defun ()
+  (interactive)
+  (setq comment (cadr (slime-eval `(swank:eval-and-grab-output ,(slime-defun-at-point)))))
+  (save-excursion
+    (end-of-defun)
+    (insert-lisp-comment-on-new-line comment)))
+
+(defun eval-print-all-defun ()
+  (unless (eq (point) (point-max))
+    (slime-eval-print-defun)
+    (end-of-defun)
+    (next-line)
+    (eval-print-all-defun)))
+
+(defun slime-eval-print-file ()
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (eval-print-all-defun)))
+
+(add-hook 'slime-mode-hook
+  (lambda ()
+    (smartparens-mode)
+    (evil-cleverparens-mode)
+    (rainbow-delimiters-mode)
+    (sp-pair "'" nil :actions :rem)
+    (evil-leader/set-key
+      "cd" 'slime-eval-print-defun
+      "cs" 'slime-eval-print-sexp
+      "cf" 'slime-eval-print-file
+      "dc" 'delete-eval-comments
+      "rs" 'slime-eval-last-expression-in-repl
+      "rd" 'slime-eval-last-defun-in-repl
+      "bd" 'slime-eval-defun
+      "bs" 'slime-eval-last-expression
+      )))
