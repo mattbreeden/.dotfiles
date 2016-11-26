@@ -295,7 +295,7 @@
   (when (on-eval-comment-line) (kill-whole-line))
   (newline)
   (previous-line)
-  (insert ";=> ")
+  (insert slime-eval-comment-fmt)
   (insert comment))
 
 (defun slime-eval-print-sexp ()
