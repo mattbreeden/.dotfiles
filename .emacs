@@ -44,7 +44,8 @@
   'fill-column-indicator
   'key-chord
   'navigate
-  'rainbow-mode)
+  'rainbow-mode
+  'yasnippet)
 
 (menu-bar-mode -1)
 (setq-default indent-tabs-mode nil)
@@ -99,6 +100,9 @@
 ; this renders incorrect in terminal vim
 (add-to-list 'default-frame-alist '(background-color . "black"))
 
+; 4 space indenting in c
+(setq-default c-basic-offset 4)
+
 (require 'editorconfig)
 (editorconfig-mode 1)
 
@@ -108,6 +112,9 @@
 
 (defun save-all () (interactive) (save-some-buffers t))
 (global-set-key (kbd "C-s") 'save-all)
+
+(require 'yasnippet)
+(yas-global-mode 1)
 
 (require 'company)
 
