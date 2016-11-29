@@ -84,7 +84,7 @@
 (setq show-paren-delay 0)
 
 (global-linum-mode t)
-(setq linum-format "%2d\u2502")
+(setq linum-format "%3d\u2502")
 
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 (setq-default fill-column 80)
@@ -150,9 +150,14 @@
 (evil-mode 1)
 
 (define-key evil-insert-state-map
-  (kbd "C-s") (lambda () (interactive)
+  (kbd "C-s")
+  (lambda ()
+    (interactive)
     (save-all)
     (evil-normal-state)))
+
+(define-key evil-normal-state-map (kbd "K") nil)
+(define-key evil-visual-state-map (kbd "K") nil)
 
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
