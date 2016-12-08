@@ -14,12 +14,12 @@ setup ssh (also on github) or copy in existing key
 copy clipboard file into /usr/lib/urxvt/perl
 apt-get install xclip
 
-apt-get i3blocks. If it's not available, build it from the source at: github.com/vivien/i3blocks 
+apt-get i3blocks. If it's not available, build it from the source at: github.com/vivien/i3blocks
 This can be put off for later if .i3/config is edited to not call to this library
 
 install chrome
 
-install tig from source at: github.com/jonas/tig 
+install tig from source at: github.com/jonas/tig
 
 install python 2.7
 apt-get install python-pip
@@ -36,7 +36,9 @@ sudo mv git-flow-completion.bash /usr/local/etc/bash_completion.d/
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > git-completion.bash
 sudo mv git-completion.bash /usr/local/etc/bash_completion.d/
 
-install i3block scripts from https://github.com/Anachron/i3blocks or git@github.com:mattbreeden/i3blocks.git(branch memory/swap-available) if my PR doesn't get merged
+install i3lock with blur from https://github.com/karulont/i3lock-blur
+
+install i3block scripts from https://github.com/Anachron/i3blocks
 apt-get install bc
 apt-get install acpi
 move memory and cpu
@@ -51,3 +53,4 @@ apt-get install zeal - install desired docs
 apt-get install ranger
 apt-get install dtrx
 apt-get install zathura
+apt-get install manpages-dev manpages-posix-dev

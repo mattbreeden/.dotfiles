@@ -156,4 +156,4 @@ bar {
 }
 
 exec_always feh --bg-scale --randomize ~/Pictures/wallpapers/*
-bindsym $mod+Shift+x exec "i3lock -g"
+bindsym $mod+Shift+x exec "i3lock -f"
