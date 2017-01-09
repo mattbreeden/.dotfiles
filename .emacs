@@ -48,6 +48,7 @@
   'yasnippet)
 
 (menu-bar-mode -1)
+(setq column-number-mode t)
 (setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
 (smooth-scrolling-mode)
@@ -193,6 +194,7 @@
 
 (add-hook 'dired-mode-hook
   (lambda ()
+    (auto-revert-mode)
     ;; (define-key dired-mode-map (kbd "C-p") 'helm-projectile-find-file)
     (define-key evil-normal-state-local-map (kbd "G") 'evil-goto-line)
     (define-key evil-normal-state-local-map (kbd "?") 'evil-search-backward)
