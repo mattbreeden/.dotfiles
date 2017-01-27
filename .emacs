@@ -21,6 +21,7 @@
 (package-initialize)
 
 (ensure-package-installed
+  'ack
   'base16-theme
   'company
   'elpy
@@ -48,6 +49,7 @@
   'yasnippet)
 
 (menu-bar-mode -1)
+(setq column-number-mode t)
 (setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
 (smooth-scrolling-mode)
@@ -193,6 +195,7 @@
 
 (add-hook 'dired-mode-hook
   (lambda ()
+    (auto-revert-mode)
     ;; (define-key dired-mode-map (kbd "C-p") 'helm-projectile-find-file)
     (define-key evil-normal-state-local-map (kbd "G") 'evil-goto-line)
     (define-key evil-normal-state-local-map (kbd "?") 'evil-search-backward)
@@ -354,3 +357,18 @@
      (define-key company-active-map (kbd "C-n") 'company-complete-common-or-cycle)
      (define-key company-active-map (kbd "C-p") 'company-select-previous)
      ))
+
+(custom-set-faces
+    '(flymake-errline ((((class color)) (:background "Gray30"))))
+    '(flymake-warnline ((((class color)) (:background "Gray30")))))
+
+(evil-leader/set-key
+    "fn" 'flymake-goto-next-error
+    "fp" 'flymake-goto-prev-error)
+
+
+(defun my-ack-default-directory (_arg)
+  (or (ack-guess-project-root default-directory)
+      (read-directory-name "In directory: " nil nil t)))
+
+(setq ack-default-directory-function #'my-ack-default-directory)
