@@ -330,6 +330,7 @@
     (evil-cleverparens-mode)
     (rainbow-delimiters-mode)
     (sp-pair "'" nil :actions :rem)
+    (sp-pair "`" nil :actions :rem)
     (evil-leader/set-key
       "cd" 'slime-eval-print-defun
       "cs" 'slime-eval-print-sexp
