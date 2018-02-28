@@ -54,3 +54,10 @@ apt-get install ranger
 apt-get install dtrx
 apt-get install zathura
 apt-get install manpages-dev manpages-posix-dev
+
+
+
+# TODO:
+emacs
+  - cmake
+  - libclang

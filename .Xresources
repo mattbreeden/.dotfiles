@@ -1,7 +1,8 @@
+URxvt.perl-ext-common: default,clipboard
 URxvt.clipboard.copycmd: xclip -i -selection clipboard
 URxvt.clipboard.pastecmd: xclip -o -selection clipboard
-URxvt.perl-ext-common: default,clipboard
 URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.keysym.Shift-Control-C: perl:clipboard:copy
 URxvt.iso14755: False
 
 URxvt*font: xft:menlo:size=10,xft:monaco:size=10

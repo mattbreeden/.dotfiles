@@ -21,8 +21,13 @@ coverage
 # Ctags #
 #########
 tags
+TAGS
 
 # Python #
 #########
 *.pyc
 venv
+
+# Visual Studio #
+#################
+.vscode/

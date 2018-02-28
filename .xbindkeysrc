@@ -36,29 +36,28 @@
 
 
 #Brightness Up
-"brightness up"
-    m:0x0 + c:73
-    F7 
+"xbacklight -inc 10"
+  XF86MonBrightnessUp
 
 #Brightness Down
-"brightness down"
-    m:0x0 + c:72
-    F6 
+"xbacklight -dec 10"
+  XF86MonBrightnessDown 
 
 #Toggle Mute
-"amixer set Master toggle"
-    m:0x0 + c:74
-    F8 
+"amixer -D pulse set Master toggle"
+  XF86AudioMute
 
 #Volume Up
 "amixer set Master 5%+"
-    m:0x0 + c:76
-    F10 
+  XF86AudioRaiseVolume
 
 #Volume Down
 "amixer set Master 5%-"
-    m:0x0 + c:75
-    F9 
+  XF86AudioLowerVolume
+
+#Print Screen
+"scrot -q 100"
+  Print
 
 #
 # End of xbindkeys configuration

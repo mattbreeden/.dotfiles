@@ -1,7 +1,10 @@
-export EDITOR='vim'
+# export EDITOR='vim'
+export EDITOR='emacsclient -t'
+alias emacs='emacsclient --alternate-editor="" -t'
 
 BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
 
 # Custom bash prompt via kirsle.net/wizards/ps1.html
 # export PS1="\[$(tput bold)\]\[$(tput setaf 7)\]\A>\[$(tput setaf 1)\]\h:\[$(tput setaf 2)\]\W \\$ \[$(tput sgr0)\]"
@@ -29,7 +32,8 @@ stty -ixon
 alias ls='ls --color'
 alias l='ls -A'
 alias lah='ls -lAh'
-alias lf='ls -CF'
+alias lf='ls -d */'
+alias lsd='ls -d */'
 
 alias ..='cd ..'
 alias cls='clear'
@@ -41,6 +45,8 @@ alias ga='git add'
 alias gc='git commit -m '
 #git h is set up in .gitconfig
 alias gh='git h'
+alias master='git checkout master'
+alias dev='git checkout develop'
 
 # Python Virtualenv aliases
 alias vc='virtualenv venv'
@@ -65,3 +71,16 @@ export PATH="/usr/local/bin:$PATH"
 
 [[ -s "/usr/local/etc/bash_completion.d/git-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-completion.bash
 [[ -s "/usr/local/etc/bash_completion.d/git-flow-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-flow-completion.bash
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+source ~/.profile
+
+export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+if [[ $- == *i* ]]; then
+    source $NVM_DIR/nvm.sh --no-use
+else
+    source $NVM_DIR/nvm.sh
+fi

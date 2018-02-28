@@ -5,6 +5,7 @@
 --type-set=cucumber=.feature
 --type-set=c=.c,.cpp,.ino,.pde,.h
 --ignore-file=is:tags
+--ignore-file=is:TAGS
 --ignore-dir=vendor
 --ignore-dir=venv
 --ignore-dir=log
@@ -12,6 +13,7 @@
 --ignore-dir=tmp
 --ignore-dir=doc
 --ignore-dir=coverage
+--ignore-dir=static
 --ignore-dir=public/assets
 --ignore-dir=spec/cassettes
 --ignore-dir=features/cassettes
