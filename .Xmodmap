@@ -1,5 +1,6 @@
+clear lock
 clear control
-clear mod4
-keycode 133 = Super_L
-add control = Control_L Control_R Super_L
-add mod4 = Hyper_L Super_R
+!have Capslock work as Control
+add control = Caps_Lock Control_L Control_R
+!Shift + Capslock = Capslock
+keycode 66 = Control_L Caps_Lock NoSymbol NoSymbol
