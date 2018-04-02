@@ -1,34 +1,48 @@
-Wherein I document exactly how to re-setup my system after ruining it.
+sudo apt-get update
+sudo apt-get upgrade
+setup ssh
 
-In no real order after the first couple
+sudo apt-get install git vim curl
+sudo apt-get install i3 rxvt-unicode-256color j4-dmenu-desktop
 
-apt-get update and apt get upgrade
-apt-get install git vim curl man-db
-apt-get install rxvt-unicode-256color
+cd .dotfiles/.vim/bundle
+git submodule update --init
+cd
+ln -s .dotfiles/.vimrc .vimrc
+ln -s .dotfiles/.vim .vim
 
-Clone in dotfiles.
-Symlink all (relevant) files from .dotfiles into home folder
+ln -s .dotfiles/.i3 .i3
+ln -s .dotfiles/.Xresources .Xresources
+ln -s .dotfiles/.Xmodmap .Xmodmap
 
-setup ssh (also on github) or copy in existing key
+sudo apt-get install xbindkeys xbacklight compton scrot
+ln -s .dotfiles/.xbindkeysrc .xbindkeysrc
+ln -s .dotfiles/.xsession .xsession
+edit /usr/share/xsessions/i3.desktop to say:
+Exec=/etc/X11/Xsession
+TryExec=/etc/X11/Xsession
 
-copy clipboard file into /usr/lib/urxvt/perl
-apt-get install xclip
+curl -L https://github.com/hbin/top-programming-fonts/raw/ c9bc56a2400447e85c239117080d6f374a1cf98b/install.sh | bash
 
-apt-get i3blocks. If it's not available, build it from the source at: github.com/vivien/i3blocks
-This can be put off for later if .i3/config is edited to not call to this library
+ln -s .dotfiles/.bashrc .bashrc
+
+cp -r .dotfiles/.config/base16-shell .config/
+
+sudo cp .dotfiles/clipboard /usr/lib/urxvt/perl/
+sudo apt-get install xclip
 
 install chrome
 
-install tig from source at: github.com/jonas/tig
+sudo apt-get install i3blocks
+ln -s .dotfiles/.i3blocks.conf .i3blocks.conf
+ln -s .dotfiles/.i3blocks .i3blocks
+cat /proc/net/wireless -> Put interface into .i3blocks.conf script
 
-install python 2.7
-apt-get install python-pip
-pip install --upgrade pip
-pip install virtualenvwrapper
 
-enable utf-8 locale
-this is a huge pain sometimes, make sure to restart because apparently some changes
-only take affect after doing so
+Download a release of tig from: https://github.com/jonas/tig/releases
+sudo apt-get install libncurses5-dev libncursesw5-dev
+make
+sudo make install
 
 sudo mkdir -p /usr/local/etc/bash_completion.d
 curl https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash > git-flow-completion.bash
@@ -36,16 +50,21 @@ sudo mv git-flow-completion.bash /usr/local/etc/bash_completion.d/
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash > git-completion.bash
 sudo mv git-completion.bash /usr/local/etc/bash_completion.d/
 
-install i3lock with blur from https://github.com/karulont/i3lock-blur
 
-install i3block scripts from https://github.com/Anachron/i3blocks
-apt-get install bc
-apt-get install acpi
-move memory and cpu
+# install emacs
+ln -s .dotfiles/.emacs .emacs
 
-install languages
+install python 2.7
+apt-get install python-pip
+pip install --upgrade pip
+pip install virtualenvwrapper
 
 misc apps:
+ln -s .dotfiles/.tmux.conf .tmux.conf
+sudo apt-get install tmux
+
+sudo apt-get install man-db
+sudo apt-get install redshift
 apt-get install deluge
 sudo apt-get install software-properties-common
 sudo apt-get update

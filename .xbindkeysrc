@@ -36,11 +36,11 @@
 
 
 #Brightness Up
-"xbacklight -inc 10"
+"xbacklight -inc 5"
   XF86MonBrightnessUp
 
 #Brightness Down
-"xbacklight -dec 10"
+"xbacklight -dec 5"
   XF86MonBrightnessDown 
 
 #Toggle Mute

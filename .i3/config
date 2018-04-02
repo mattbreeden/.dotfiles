@@ -185,4 +185,4 @@ bar {
 exec --no-startup-id compton
 bindsym $mod+u exec "transset -a -t 0.85"
 
-bindsym $mod+Shift+x exec "blur-lock.sh"
+bindsym $mod+Shift+x exec "i3lock"

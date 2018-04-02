@@ -28,6 +28,7 @@ mkcd() {
 
 bind -r '\C-s'
 stty -ixon
+set -o vi
 
 alias ls='ls --color'
 alias l='ls -A'
@@ -71,11 +72,6 @@ export PATH="/usr/local/bin:$PATH"
 
 [[ -s "/usr/local/etc/bash_completion.d/git-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-completion.bash
 [[ -s "/usr/local/etc/bash_completion.d/git-flow-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-flow-completion.bash
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-source ~/.profile
 
 export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

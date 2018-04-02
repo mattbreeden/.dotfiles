@@ -91,6 +91,9 @@
   (smartparens-global-strict-mode t)
   (show-smartparens-global-mode t))
 
+;; TODO: need to require this here or remove-if errors
+;; just use a different function here
+(require 'cl)
 (use-package evil-cleverparens
   :commands (evil-cleverparens-mode)
   :init
@@ -617,8 +620,3 @@
 ;;     (apply orig-fun nil)))
 
 ;; (advice-add 'js-jsx-indent-line :around 'advice-js-jsx-indent-line)
-
-
-;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
-;; ## end of OPAM user-setup addition for emacs / base ## keep this line
