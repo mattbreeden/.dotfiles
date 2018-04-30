@@ -31,3 +31,7 @@ venv
 # Visual Studio #
 #################
 .vscode/
+
+# Emacs configs #
+#################
+.projectile

@@ -15,7 +15,7 @@ ln -s .dotfiles/.i3 .i3
 ln -s .dotfiles/.Xresources .Xresources
 ln -s .dotfiles/.Xmodmap .Xmodmap
 
-sudo apt-get install xbindkeys xbacklight compton scrot
+sudo apt-get install xbindkeys xbacklight compton hsetroot scrot
 ln -s .dotfiles/.xbindkeysrc .xbindkeysrc
 ln -s .dotfiles/.xsession .xsession
 edit /usr/share/xsessions/i3.desktop to say:

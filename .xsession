@@ -13,4 +13,7 @@ fi
 syndaemon -i 1 -K -d
 xbindkeys
 
+hsetroot -solid "#000000"
+nm-applet &
+
 exec i3

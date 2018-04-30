@@ -127,6 +127,7 @@
   (setq highlight-symbol-idle-delay 0)
   (setq highlight-symbol-highlight-single-occurrence nil))
 
+(use-package alchemist)
 
 (ensure-package-installed
  'company
@@ -163,7 +164,8 @@
  'key-chord
  'navigate
  'rainbow-mode
- 'yasnippet)
+ 'yasnippet
+ 'yasnippet-snippets)
 
 (menu-bar-mode -1)
 (setq-default indent-tabs-mode nil)
