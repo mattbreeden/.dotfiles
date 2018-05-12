@@ -103,25 +103,13 @@
 (use-package evil-cleverparens
   :commands (evil-cleverparens-mode)
   :init
-  (setq evil-cp-additional-movement-keys
-        '(("[" . evil-cp-previous-opening)
-          ("]" . evil-cp-next-closing)
-          ("{" . evil-cp-next-opening)
-          ("}" . evil-cp-previous-closing)
-          ("(" . evil-cp-backward-up-sexp)
-          (")" . evil-cp-up-sexp)))
   (setq evil-cleverparens-use-additional-movement-keys nil)
-  (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode)
-  ;; TODO: Clean this up- want >> and << binds in non lisp languages
-  ;; (defun brds/evil-cp-modify-regular-bindings (&rest r)
-  ;;   (setq evil-cp-regular-bindings
-  ;;         (remove-if (lambda (key-string)
-  ;;                      (member key-string '("_" ">" "<")))
-  ;;                    evil-cp-regular-bindings
-  ;;                    :key 'car)))
-  ;; (advice-add 'evil-cp--enable-regular-bindings :before
-  ;;             #'brds/evil-cp-modify-regular-bindings))
-  )
+  (setq evil-cp-regular-bindings
+        (remove-if (lambda (key-string)
+                     (member key-string '("_" ">" "<")))
+                   evil-cp-regular-bindings
+                   :key 'car))
+  (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
 
 ;; (use-package evil-smartparens
 ;;   :commands (evil-smartparens-mode)
@@ -143,11 +131,21 @@
 
 (use-package clojure-mode
   :init
-  (setq evil-cleverparens-use-additional-movement-keys t)
-  (evil-cp-set-additional-movement-keys)
+  ;; (setq evil-cp-additional-movement-keys
+  ;;       '(("[" . evil-cp-previous-opening)
+  ;;         ("]" . evil-cp-next-closing)
+  ;;         ("{" . evil-cp-next-opening)
+  ;;         ("}" . evil-cp-previous-closing)
+  ;;         ("(" . evil-cp-backward-up-sexp)
+  ;;         (")" . evil-cp-up-sexp)))
+  ;; TODO: factor this out to general lisp mode
   (evil-define-key 'normal clojure-mode-map
+    ">" 'evil-cp->
+    "<" 'evil-cp-<
+    "_" 'evil-cp-first-non-blank-non-opening
     "H" 'evil-cp-drag-backward
     "L" 'evil-cp-drag-forward))
+
 (use-package alchemist)
 
 (use-package emmet-mode
