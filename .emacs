@@ -26,9 +26,21 @@
 (setq use-package-always-ensure t)
 
 
-;; FIXME:
-(setq evil-want-C-u-scroll t)
+(use-package evil
+  :init
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-mode 1))
 
+(use-package drag-stuff
+  :init
+  (drag-stuff-global-mode 1)
+  :bind (:map evil-normal-state-map
+              ("H" . drag-stuff-up)
+              ("L" . drag-stuff-down)
+              :map evil-visual-state-map
+              ("H" . drag-stuff-up)
+              ("L" . drag-stuff-down)))
 
 (use-package ack
   :config
@@ -79,12 +91,6 @@
     "dg" 'cider-grimoire
     "dc" 'cider-doc))
 
-(use-package clojure-mode
-  :commands (clojure-mode)
-  ;; :config
-  ;; (setq evil-cleverparens-use-additional-movement-keys t)
-  )
-
 (use-package smartparens
   :config
   (require 'smartparens-config)
@@ -97,17 +103,25 @@
 (use-package evil-cleverparens
   :commands (evil-cleverparens-mode)
   :init
+  (setq evil-cp-additional-movement-keys
+        '(("[" . evil-cp-previous-opening)
+          ("]" . evil-cp-next-closing)
+          ("{" . evil-cp-next-opening)
+          ("}" . evil-cp-previous-closing)
+          ("(" . evil-cp-backward-up-sexp)
+          (")" . evil-cp-up-sexp)))
   (setq evil-cleverparens-use-additional-movement-keys nil)
   (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode)
   ;; TODO: Clean this up- want >> and << binds in non lisp languages
-  (defun brds/evil-cp-modify-regular-bindings (&rest r)
-    (setq evil-cp-regular-bindings
-          (remove-if (lambda (key-string)
-                       (member key-string '("_" ">" "<")))
-                     evil-cp-regular-bindings
-                     :key 'car)))
-  (advice-add 'evil-cp--enable-regular-bindings :before
-              #'brds/evil-cp-modify-regular-bindings))
+  ;; (defun brds/evil-cp-modify-regular-bindings (&rest r)
+  ;;   (setq evil-cp-regular-bindings
+  ;;         (remove-if (lambda (key-string)
+  ;;                      (member key-string '("_" ">" "<")))
+  ;;                    evil-cp-regular-bindings
+  ;;                    :key 'car)))
+  ;; (advice-add 'evil-cp--enable-regular-bindings :before
+  ;;             #'brds/evil-cp-modify-regular-bindings))
+  )
 
 ;; (use-package evil-smartparens
 ;;   :commands (evil-smartparens-mode)
@@ -127,13 +141,28 @@
   (setq highlight-symbol-idle-delay 0)
   (setq highlight-symbol-highlight-single-occurrence nil))
 
+(use-package clojure-mode
+  :init
+  (setq evil-cleverparens-use-additional-movement-keys t)
+  (evil-cp-set-additional-movement-keys)
+  (evil-define-key 'normal clojure-mode-map
+    "H" 'evil-cp-drag-backward
+    "L" 'evil-cp-drag-forward))
 (use-package alchemist)
+
+(use-package emmet-mode
+  :init
+  (add-hook 'html-mode-hook #'emmet-mode))
+
+(use-package which-key
+  :config
+  (which-key-mode))
+
 
 (ensure-package-installed
  'company
  'elpy
  'editorconfig
- 'evil
  'evil-leader
  'evil-matchit
  'evil-nerd-commenter
@@ -141,7 +170,6 @@
  'flycheck
  'flycheck-irony
  'flycheck-rust
- 'drag-stuff
  'helm
  'highlight-symbol
  'projectile
@@ -205,6 +233,7 @@
 (put 'add-hook 'lisp-indent-function 1)
 
 (global-linum-mode t)
+(column-number-mode)
 (setq linum-format "%3d\u2502")
 
 (setq whitespace-line-column 80)
@@ -282,10 +311,6 @@
 (require 'evil-matchit)
 (global-evil-matchit-mode 1)
 
-; order is important
-(require 'evil)
-(evil-mode 1)
-
 (define-key evil-insert-state-map
   (kbd "C-s")
   (lambda ()
@@ -298,9 +323,6 @@
   (lambda ()
     (interactive)
     (evil-yank (point) (point-at-eol))))
-
-(define-key evil-normal-state-map (kbd "K") nil)
-(define-key evil-visual-state-map (kbd "K") nil)
 
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 
@@ -515,30 +537,18 @@
  ;; If there is more than one, they won't work right.
  '(flymake-error ((((class color)) (:background "Gray27"))))
  '(flymake-warning ((((class color)) (:background "Gray27"))))
- '(highlight-symbol-face ((t (:background "color-19")))))
+ '(highlight-symbol-face ((t (:background "color-19"))))
+ '(rainbow-delimiters-depth-1-face ((t (:foreground "magenta"))))
+ '(rainbow-delimiters-depth-2-face ((t (:foreground "cyan"))))
+ '(rainbow-delimiters-depth-3-face ((t (:foreground "red"))))
+ '(rainbow-delimiters-depth-4-face ((t (:foreground "green"))))
+ '(rainbow-delimiters-depth-5-face ((t (:foreground "yellow")))))
 ;; '(linum ((t (:background "#282a2e" :foreground "#969896"))))
 
 
 (evil-leader/set-key
-    "fn" 'flymake-goto-next-error
-    "fp" 'flymake-goto-prev-error)
-
-
-;; TODO: Make this work (for drag-stuff)
-;; (defun setup-input-decode-map ()
-;;   (define-key input-decode-map "\e[1;2A" [S-up])
-;;   (define-key input-decode-map "\e[1;2B" [S-down])
-;;   (define-key input-decode-map "\e[1;2C" [S-right])
-;;   (define-key input-decode-map "\e[1;2D" [S-left]))
-
-;; (setup-input-decode-map)
-;; (add-hook 'tty-setup-hook #'setup-input-decode-map)
-;; (add-hook 'before-save-hook #'setup-input-decode-map)
-
-(require 'drag-stuff)
-(drag-stuff-global-mode 1)
-(drag-stuff-define-keys)
-(setq drag-stuff-modifier 'shift)
+  "fn" 'flymake-goto-next-error
+  "fp" 'flymake-goto-prev-error)
 
 (setenv "MANWIDTH" "80")
 
