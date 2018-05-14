@@ -101,14 +101,16 @@
 ;; just use a different function here
 (require 'cl)
 (use-package evil-cleverparens
-  :commands (evil-cleverparens-mode)
   :init
   (setq evil-cleverparens-use-additional-movement-keys nil)
-  (setq evil-cp-regular-bindings
-        (remove-if (lambda (key-string)
-                     (member key-string '("_" ">" "<")))
-                   evil-cp-regular-bindings
-                   :key 'car))
+  (defun custom/evil-cp-modify-regular-bindings (&rest r)
+    (setq evil-cp-regular-bindings
+          (remove-if (lambda (key-string)
+                       (member key-string '("_" ">" "<")))
+                     evil-cp-regular-bindings
+                     :key 'car)))
+  (advice-add 'evil-cp--enable-regular-bindings :before
+              #'custom/evil-cp-modify-regular-bindings)
   (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
 
 ;; (use-package evil-smartparens
@@ -155,6 +157,15 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+(use-package rtags
+  :config
+  (rtags-start-process-unless-running)
+  (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+  (evil-define-key 'normal c-mode-map
+    (kbd "C-]") 'rtags-find-symbol-at-point
+    (kbd "C-t") 'rtags-location-stack-back))
 
 
 (ensure-package-installed
@@ -230,7 +241,7 @@
 ;; Causes auto indent to only do one 'indent' on 'add-hook'
 (put 'add-hook 'lisp-indent-function 1)
 
-(global-linum-mode t)
+;; (global-linum-mode t)
 (column-number-mode)
 (setq linum-format "%3d\u2502")
 
