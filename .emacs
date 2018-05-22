@@ -32,7 +32,17 @@
   :config
   (evil-mode 1)
   (evil-define-key nil evil-insert-state-map
-                   (kbd "C-e") 'evil-append-line))
+    (kbd "C-l") 'evil-forward-char
+    (kbd "C-h") 'evil-backward-char
+    (kbd "C-j") 'evil-next-line
+    (kbd "C-k") 'evil-previous-line
+
+    (kbd "C-f") 'evil-forward-char
+    (kbd "C-b") 'evil-backward-char
+    (kbd "C-e") 'evil-append-line
+    (kbd "C-n") 'evil-next-line
+    (kbd "C-p") 'evil-previous-line
+    (kbd "C-g") 'evil-normal-state))
 
 (use-package drag-stuff
   :init
