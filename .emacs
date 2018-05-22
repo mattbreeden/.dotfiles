@@ -30,7 +30,9 @@
   :init
   (setq evil-want-C-u-scroll t)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (evil-define-key nil evil-insert-state-map
+                   (kbd "C-e") 'evil-append-line))
 
 (use-package drag-stuff
   :init
@@ -128,7 +130,7 @@
   :init
   (add-hook 'prog-mode-hook #'highlight-symbol-mode)
   :config
-  (setq highlight-symbol-idle-delay 0)
+  (setq highlight-symbol-idle-delay .3)
   (setq highlight-symbol-highlight-single-occurrence nil))
 
 (use-package clojure-mode
@@ -157,6 +159,22 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+
+(use-package avy
+  :init
+  (setq avy-style 'at-full)
+  (setq avy-all-windows nil)
+  :config
+  (defun avy-goto-word-in-line-0 ()
+    (avy-goto-word-0 nil (line-beginning-position) (line-end-position)))
+  (defun avy-goto-line-word-0 ()
+    (interactive)
+    (avy-goto-line 1)
+    (avy-goto-word-in-line-0))
+  (evil-define-key nil evil-normal-state-map
+    "gl" 'avy-goto-line-word-0
+    "gw" 'avy-goto-word-1))
 
 (use-package rtags
   :config
