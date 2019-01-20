@@ -15,6 +15,7 @@ function parse_git_branch {
 
 export PS1="\[$(tput setaf 7)\]\A\[$(tput setaf 1)\]❯\[$(tput setaf 3)\]❯\[$(tput setaf 2)\]❯ \[$(tput setaf 1)\]\u:\[$(tput setaf 2)\]\W \$(parse_git_branch)\\[$(tput setaf 4)\]\[$(tput setaf 2)\]$ \[$(tput sgr0)\]"
 
+
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
@@ -49,6 +50,8 @@ alias gh='git h'
 alias master='git checkout master'
 alias dev='git checkout develop'
 
+# default C settings alias
+alias ce='cc -Wall -Wextra -pedantic -Wstrict-aliasing -g -std=c99'
 # Python Virtualenv aliases
 alias vc='virtualenv venv'
 alias va='source venv/bin/activate'
@@ -63,6 +66,8 @@ alias tmux='tmux -2' # Force 256 color mode
 alias tks='tmux kill-session'
 alias tls='tmux ls'
 alias tas='tmux attach-session -t'
+
+alias mux='tmuxinator'
 
 # Scheme with niceties
 alias scheme="rlwrap -r -c -f ~/.config/mit_scheme_bindings.txt scheme"
