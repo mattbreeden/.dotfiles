@@ -1,5 +1,7 @@
 (require 'package)
 
+(add-to-list 'load-path "~/.emacs.d/local/")
+
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
@@ -39,9 +41,10 @@
 
     (kbd "C-f") 'evil-forward-char
     (kbd "C-b") 'evil-backward-char
+    (kbd "C-a") 'evil-insert-line
     (kbd "C-e") 'evil-append-line
-    (kbd "C-n") 'evil-next-line
-    (kbd "C-p") 'evil-previous-line
+    ;; (kbd "C-n") 'evil-next-line
+    ;; (kbd "C-p") 'evil-previous-line
     (kbd "C-g") 'evil-normal-state))
 
 (use-package drag-stuff
@@ -64,6 +67,7 @@
 (use-package aggressive-indent
   :config
   (global-aggressive-indent-mode 1)
+  (add-to-list 'aggressive-indent-excluded-modes 'elixir-mode)
   (add-to-list
    'aggressive-indent-dont-indent-if
    '(and (derived-mode-p 'c-mode)
@@ -83,21 +87,22 @@
   :commands (cider-mode)
   :init
   (setq cider-prompt-for-symbol nil)
-  (setq cider-cljs-lein-repl
-        "(do (require 'figwheel-sidecar.repl-api)
-             (figwheel-sidecar.repl-api/start-figwheel!)
-             (figwheel-sidecar.repl-api/cljs-repl))")
+  ;; (setq cider-cljs-lein-repl
+  ;;       "(do (require 'figwheel-sidecar.repl-api)
+  ;;            (figwheel-sidecar.repl-api/start-figwheel!)
+  ;;            (figwheel-sidecar.repl-api/cljs-repl))")
   (add-hook 'cider-mode-hook #'eldoc-mode)
   :config
   (evil-leader/set-key
     "cd" 'cider-eval-defun-at-point
     "cs" 'cider-eval-sexp-at-point
     ;; "rl" 'cider-load-buffer-and-switch-to-repl-buffer
+    "rc" 'cider-switch-to-last-clojure-buffer
     "rr" (lambda ()
            (interactive)
            (let ((current-prefix-arg '(4)))
              (call-interactively #'cider-switch-to-repl-buffer)))
-    ;; "rs" 'cider-eval-last-sexp-to-repl
+    "rs" 'cider-eval-last-sexp-to-repl
     "bd" 'cider-eval-defun-at-point
     "bs" 'cider-eval-sexp-at-point
     "dg" 'cider-grimoire
@@ -106,15 +111,25 @@
 (use-package smartparens
   :config
   (require 'smartparens-config)
-  (smartparens-global-strict-mode t)
+  ;; (smartparens-global-strict-mode t)
+  (smartparens-global-mode t)
   (show-smartparens-global-mode t))
 
 ;; TODO: need to require this here or remove-if errors
 ;; just use a different function here
 (require 'cl)
+
 (use-package evil-cleverparens
   :init
-  (setq evil-cleverparens-use-additional-movement-keys nil)
+  (setq evil-cleverparens-use-regular-insert t)
+  ;; (setq evil-cleverparens-use-additional-movement-keys nil)
+  (setq evil-cp-additional-movement-keys
+        '(("(" . evil-cp-previous-opening)
+          (")" . evil-cp-next-closing)
+          ("[" . evil-cp-next-opening)
+          ("]" . evil-cp-previous-closing)
+          ("{" . evil-cp-backward-up-sexp)
+          ("}" . evil-cp-up-sexp)))
   (defun custom/evil-cp-modify-regular-bindings (&rest r)
     (setq evil-cp-regular-bindings
           (remove-if (lambda (key-string)
@@ -143,15 +158,10 @@
   (setq highlight-symbol-idle-delay .3)
   (setq highlight-symbol-highlight-single-occurrence nil))
 
+(use-package olivetti)
+
 (use-package clojure-mode
   :init
-  ;; (setq evil-cp-additional-movement-keys
-  ;;       '(("[" . evil-cp-previous-opening)
-  ;;         ("]" . evil-cp-next-closing)
-  ;;         ("{" . evil-cp-next-opening)
-  ;;         ("}" . evil-cp-previous-closing)
-  ;;         ("(" . evil-cp-backward-up-sexp)
-  ;;         (")" . evil-cp-up-sexp)))
   ;; TODO: factor this out to general lisp mode
   (evil-define-key 'normal clojure-mode-map
     ">" 'evil-cp->
@@ -160,11 +170,17 @@
     "H" 'evil-cp-drag-backward
     "L" 'evil-cp-drag-forward))
 
-(use-package alchemist)
+(use-package alchemist
+  :config
+  (evil-define-key 'normal elixir-mode-map
+    (kbd "C-]") 'alchemist-goto-definition-at-point))
 
 (use-package emmet-mode
   :init
-  (add-hook 'html-mode-hook #'emmet-mode))
+  (add-hook 'html-mode-hook #'emmet-mode)
+  :config
+  (evil-define-key nil evil-insert-state-map
+    (kbd "C-y") 'emmet-expand-line))
 
 (use-package which-key
   :config
@@ -175,6 +191,7 @@
   :init
   (setq avy-style 'at-full)
   (setq avy-all-windows nil)
+  (setq avy-background t)
   :config
   (defun avy-goto-word-in-line-0 ()
     (avy-goto-word-0 nil (line-beginning-position) (line-end-position)))
@@ -194,6 +211,45 @@
   (evil-define-key 'normal c-mode-map
     (kbd "C-]") 'rtags-find-symbol-at-point
     (kbd "C-t") 'rtags-location-stack-back))
+
+
+(use-package odin-mode
+  :load-path "local/"
+  :init
+  (add-hook 'odin-mode-hook 'flycheck-mode))
+
+(use-package glsl-mode
+  :load-path "local/")
+
+(use-package flycheck-odin
+  :load-path "local/"
+  :commands (flycheck-odin-setup))
+
+(use-package irony
+  :init
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'irony-mode-hook #'irony-eldoc)
+  (add-hook 'irony-mode-hook 'flycheck-mode)
+  :config
+  (evil-leader/set-key
+    "dc" (lambda ()
+           (interactive)
+           (manual-entry (current-word)))))
+
+(use-package tide
+  :init
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  :config
+  (evil-define-key 'normal typescript-mode-map
+    (kbd "C-]") 'tide-jump-to-definition
+    (kbd "C-t") 'tide-jump-back)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . flycheck-mode)
+         (typescript-mode . company-mode)
+         (typescript-mode . eldoc-mode)
+         (typescript-mode . (lambda () (highlight-symbol-mode 0)))
+         (typescript-mode . tide-hl-identifier-mode))
+  )
 
 
 (ensure-package-installed
@@ -572,6 +628,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(avy-lead-face ((t (:background "#4f57f9" :foreground "white"))))
  '(flymake-error ((((class color)) (:background "Gray27"))))
  '(flymake-warning ((((class color)) (:background "Gray27"))))
  '(highlight-symbol-face ((t (:background "color-19"))))
@@ -588,25 +645,18 @@
   "fp" 'flymake-goto-prev-error)
 
 (setenv "MANWIDTH" "80")
+(evil-set-initial-state 'Man-mode 'normal)
 
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook
-  (lambda ()
-    (irony-mode)
-    (whitespace-mode)
-    (sp-pair "'" "'")))
+;; Prevent irony mode from enabling in 'derived' modes
+(defun my-irony-enable ()
+  (when (member major-mode irony-supported-major-modes)
+    (irony-mode 1)))
+
+(add-hook 'c++-mode-hook 'my-irony-enable)
+(add-hook 'c-mode-hook 'my-irony-enable)
 
 (add-hook 'objc-mode-hook 'irony-mode)
-(add-hook 'irony-mode-hook
-  (lambda ()
-    (evil-leader/set-key
-      "dc" (lambda ()
-             (interactive)
-             (manual-entry (current-word))))))
 
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-(add-hook 'irony-mode-hook #'irony-eldoc)
-(add-hook 'irony-mode-hook 'flycheck-mode)
 
 (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 (add-hook 'flycheck-mode-hook
@@ -618,6 +668,8 @@
 (setq flycheck-check-syntax-automatically '(mode-enabled save new-line))
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-odin-setup))
 
 ;; (require 'midnight)
 ;; (setq midnight-period (* 60 60))
