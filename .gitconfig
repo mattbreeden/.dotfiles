@@ -1,0 +1,10 @@
+[core]
+	excludesfile = ~/.gitignore_global
+	filemode = false
+[user]
+	name = matt
+	email = matt@matttb.com
+[alias]
+  h = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+[color]
+	ui = auto
