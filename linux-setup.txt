@@ -26,7 +26,6 @@ ln -s .dotfiles/.bashrc .bashrc
 
 cp -r .dotfiles/.config/base16-shell .config/
 
-sudo cp .dotfiles/clipboard /usr/lib/urxvt/perl/
 sudo apt-get install xclip
 
 install chrome
