@@ -1,0 +1,3 @@
+[Desktop Entry]
+Name=i3
+Exec=/etc/X11/Xsession
