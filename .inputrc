@@ -13,3 +13,6 @@ set menu-complete-display-prefix on
 # for previously typed lines with that command. Very similiar to ctrl+r
 "\e[A": history-search-backward
 "\e[B": history-search-forward
+
+set keymap vi-insert
+"\C-L": clear-screen

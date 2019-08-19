@@ -27,6 +27,8 @@ ln -s .dotfiles/.bash_profile .bash_profile
 ln -s .dotfiles/.profile .profile
 rm -f .bash_profile .bash_login
 
+ln -s .dotfiles/.inputrc .inputrc
+
 cp -r .dotfiles/.config/base16-shell .config/
 
 sudo apt-get install xclip
