@@ -92,5 +92,3 @@ venv
 # RTAGS #
 #########
 compile_commands.json
-
-.odin-check
