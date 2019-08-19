@@ -65,23 +65,27 @@ alias pimp="python manage.py"
 alias tmux='tmux -2' # Force 256 color mode
 alias tks='tmux kill-session'
 alias tls='tmux ls'
-alias tas='tmux attach-session -t'
 
 alias mux='tmuxinator'
-
-# Scheme with niceties
-alias scheme="rlwrap -r -c -f ~/.config/mit_scheme_bindings.txt scheme"
-
-#for Homebrew
-export PATH="/usr/local/bin:$PATH"
 
 [[ -s "/usr/local/etc/bash_completion.d/git-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-completion.bash
 [[ -s "/usr/local/etc/bash_completion.d/git-flow-completion.bash" ]] && source /usr/local/etc/bash_completion.d/git-flow-completion.bash
 
-export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-if [[ $- == *i* ]]; then
-    source $NVM_DIR/nvm.sh --no-use
-else
-    source $NVM_DIR/nvm.sh
-fi
+# export NVM_DIR="$HOME/.nvm"
+# # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# if [[ $- == *i* ]]; then
+#     source $NVM_DIR/nvm.sh --no-use
+# else
+#     source $NVM_DIR/nvm.sh
+# fi
+# # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[[ -s ~/.profile ]] && source ~/.profile
+
+eval `fnm env`
+
+# RVM authors think they're more important than everyone else and whine if they aren't
+# the last thing on the path. Even if nothing before it conflicts.
+# They also write this shit in without asking or telling and
+# will replace symlinks when doing so. TODO: use something else.
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
