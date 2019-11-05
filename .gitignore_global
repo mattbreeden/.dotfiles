@@ -87,6 +87,7 @@ venv
 
 # Emacs configs #
 #################
+.dir-locals.el
 .projectile
 
 # RTAGS #
