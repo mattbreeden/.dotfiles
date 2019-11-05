@@ -20,7 +20,7 @@ ln -s .dotfiles/.xbindkeysrc .xbindkeysrc
 ln -s .dotfiles/.xsession .xsession
 ln -s .dotfiles/i3.desktop /usr/share/xsessions/i3.desktop
 
-curl -L https://github.com/hbin/top-programming-fonts/raw/ c9bc56a2400447e85c239117080d6f374a1cf98b/install.sh | bash
+curl -L https://github.com/hbin/top-programming-fonts/raw/c9bc56a2400447e85c239117080d6f374a1cf98b/install.sh | bash
 
 ln -s .dotfiles/.bashrc .bashrc
 ln -s .dotfiles/.bash_profile .bash_profile
