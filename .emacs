@@ -27,6 +27,7 @@
 (eval-when-compile (require 'use-package))
 (setq use-package-always-ensure t)
 
+(global-wakatime-mode)
 
 (use-package evil
   :init
@@ -66,7 +67,6 @@
 
 (use-package aggressive-indent
   :config
-  (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'elixir-mode)
   (add-to-list
    'aggressive-indent-dont-indent-if
@@ -117,28 +117,28 @@
 
 ;; TODO: need to require this here or remove-if errors
 ;; just use a different function here
-(require 'cl)
+;; (require 'cl)
 
-(use-package evil-cleverparens
-  :init
-  (setq evil-cleverparens-use-regular-insert t)
-  ;; (setq evil-cleverparens-use-additional-movement-keys nil)
-  (setq evil-cp-additional-movement-keys
-        '(("(" . evil-cp-previous-opening)
-          (")" . evil-cp-next-closing)
-          ("[" . evil-cp-next-opening)
-          ("]" . evil-cp-previous-closing)
-          ("{" . evil-cp-backward-up-sexp)
-          ("}" . evil-cp-up-sexp)))
-  (defun custom/evil-cp-modify-regular-bindings (&rest r)
-    (setq evil-cp-regular-bindings
-          (remove-if (lambda (key-string)
-                       (member key-string '("_" ">" "<")))
-                     evil-cp-regular-bindings
-                     :key 'car)))
-  (advice-add 'evil-cp--enable-regular-bindings :before
-              #'custom/evil-cp-modify-regular-bindings)
-  (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
+;; (use-package evil-cleverparens
+;;   :init
+;;   (setq evil-cleverparens-use-regular-insert t)
+;;   ;; (setq evil-cleverparens-use-additional-movement-keys nil)
+;;   (setq evil-cp-additional-movement-keys
+;;         '(("(" . evil-cp-previous-opening)
+;;           (")" . evil-cp-next-closing)
+;;           ("[" . evil-cp-next-opening)
+;;           ("]" . evil-cp-previous-closing)
+;;           ("{" . evil-cp-backward-up-sexp)
+;;           ("}" . evil-cp-up-sexp)))
+;;   (defun custom/evil-cp-modify-regular-bindings (&rest r)
+;;     (setq evil-cp-regular-bindings
+;;           (remove-if (lambda (key-string)
+;;                        (member key-string '("_" ">" "<")))
+;;                      evil-cp-regular-bindings
+;;                      :key 'car)))
+;;   (advice-add 'evil-cp--enable-regular-bindings :before
+;;               #'custom/evil-cp-modify-regular-bindings)
+;;   (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
 
 ;; (use-package evil-smartparens
 ;;   :commands (evil-smartparens-mode)
@@ -205,12 +205,20 @@
 
 (use-package rtags
   :config
-  (rtags-start-process-unless-running)
+  (setq rtags-socket-file "/run/user/1000/rdm.socket")
+  (setq rtags-completions-enabled t)
   (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
   (evil-define-key 'normal c-mode-map
     (kbd "C-]") 'rtags-find-symbol-at-point
     (kbd "C-t") 'rtags-location-stack-back))
+(add-hook 'c-mode-hook 'flycheck-mode)
+
+(use-package flycheck-rtags)
+(use-package company-rtags
+  :init
+  (eval-after-load 'company
+     '(add-to-list 'company-backends 'company-rtags)))
 
 
 (use-package odin-mode
@@ -225,16 +233,45 @@
   :load-path "local/"
   :commands (flycheck-odin-setup))
 
-(use-package irony
-  :init
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'irony-mode-hook #'irony-eldoc)
-  (add-hook 'irony-mode-hook 'flycheck-mode)
+(use-package flycheck-clang-unity
+  :load-path "local/"
+  :commands (flycheck-clang-unity-setup))
+
+;; (use-package irony
+;;   :init
+;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+;;   (add-hook 'irony-mode-hook #'irony-eldoc)
+;;   (add-hook 'irony-mode-hook 'flycheck-mode)
+;;   (eval-after-load 'company
+;;      '(add-to-list 'company-backends 'company-irony)))
+;;   :config
+;;   (evil-leader/set-key
+;;     "dc" (lambda ()
+;;            (interactive)
+;;            (manual-entry (current-word)))))
+
+(use-package go-mode
   :config
+  (add-hook 'go-mode-hook 'flycheck-mode)
+  (evil-define-key 'normal go-mode-map
+    (kbd "C-]") 'godef-jump)
   (evil-leader/set-key
-    "dc" (lambda ()
-           (interactive)
-           (manual-entry (current-word)))))
+    "dc" 'godoc-at-point))
+(use-package company-go
+  :config
+  (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends) '(company-go))
+                            (company-mode))))
+(use-package go-eldoc
+  :config
+  (add-hook 'go-mode-hook 'go-eldoc-setup))
+
+
+(use-package nasm-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode))
+  (setq-default nasm-basic-offset 4))
+
 
 (use-package tide
   :init
@@ -244,12 +281,18 @@
     (kbd "C-]") 'tide-jump-to-definition
     (kbd "C-t") 'tide-jump-back)
   :hook ((typescript-mode . tide-setup)
+         (typescript-mode . add-node-modules-path)
          (typescript-mode . flycheck-mode)
          (typescript-mode . company-mode)
          (typescript-mode . eldoc-mode)
          (typescript-mode . (lambda () (highlight-symbol-mode 0)))
-         (typescript-mode . tide-hl-identifier-mode))
-  )
+         (typescript-mode . tide-hl-identifier-mode)))
+
+;; Deals with race condition between flycheck checking stuff and creating a file
+;; which webpack sees and tries to process
+;; which flycheck then deletes causing an error in webpack
+(eval-after-load 'flycheck
+  '(setcar (memq 'source-inplace (flycheck-checker-get 'typescript-tslint 'command)) 'source-original))
 
 
 (ensure-package-installed
@@ -282,6 +325,8 @@
  ;; 'web-mode
  'rjsx-mode
 
+ 'add-node-modules-path
+
  'key-chord
  'navigate
  'rainbow-mode
@@ -299,8 +344,8 @@
 (setq backup-directory-alist
   `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
-  `((".*" ,temporary-file-directory t)))
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+      `((".*" ,temporary-file-directory t)))
+
 (setq auto-save-default nil)
 ; treat camelCase words as separate words
 (add-hook 'prog-mode-hook 'subword-mode)
@@ -332,8 +377,13 @@
 (setq whitespace-line-column 80)
 
 (setq whitespace-style '(face lines-tail tabs trailing tab-mark))
+(add-hook 'prog-mode-hook
+  (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 (add-hook 'prog-mode-hook 'whitespace-mode)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
+(add-to-list 'auto-mode-alist
+             '("\\.md\\'" . (lambda ()
+                              (whitespace-mode t))))
 ;; (global-whitespace-mode 1)
 
 ;; (add-hook 'after-change-major-mode-hook 'fci-mode)
@@ -370,7 +420,7 @@
 
 (require 'company)
 (global-company-mode)
-(global-set-key (kbd "TAB") #'company-indent-or-complete-common)
+;; (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -620,8 +670,7 @@
   '(progn
      (define-key company-active-map (kbd "C-n") 'company-complete-common-or-cycle)
      (define-key company-active-map (kbd "C-p") 'company-select-previous)
-     (define-key company-active-map (kbd "C-b") 'company-complete-selection)
-     '(add-to-list 'company-backends 'company-irony)))
+     (define-key company-active-map (kbd "C-b") 'company-complete-selection)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -648,14 +697,14 @@
 (evil-set-initial-state 'Man-mode 'normal)
 
 ;; Prevent irony mode from enabling in 'derived' modes
-(defun my-irony-enable ()
-  (when (member major-mode irony-supported-major-modes)
-    (irony-mode 1)))
+;; (defun my-irony-enable ()
+;;   (when (member major-mode irony-supported-major-modes)
+;;     (irony-mode 1)))
 
-(add-hook 'c++-mode-hook 'my-irony-enable)
-(add-hook 'c-mode-hook 'my-irony-enable)
+;; (add-hook 'c++-mode-hook 'my-irony-enable)
+;; (add-hook 'c-mode-hook 'my-irony-enable)
 
-(add-hook 'objc-mode-hook 'irony-mode)
+;; (add-hook 'objc-mode-hook 'irony-mode)
 
 
 (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
@@ -666,10 +715,12 @@
       "fp" 'flycheck-previous-error
       "fl" 'flycheck-list-errors)))
 (setq flycheck-check-syntax-automatically '(mode-enabled save new-line))
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+;; (eval-after-load 'flycheck
+;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-odin-setup))
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-clang-unity-setup))
 
 ;; (require 'midnight)
 ;; (setq midnight-period (* 60 60))
