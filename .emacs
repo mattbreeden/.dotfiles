@@ -27,7 +27,7 @@
 (eval-when-compile (require 'use-package))
 (setq use-package-always-ensure t)
 
-(global-wakatime-mode)
+; (global-wakatime-mode)
 
 (use-package evil
   :init
@@ -220,23 +220,6 @@
   (eval-after-load 'company
      '(add-to-list 'company-backends 'company-rtags)))
 
-
-(use-package odin-mode
-  :load-path "local/"
-  :init
-  (add-hook 'odin-mode-hook 'flycheck-mode))
-
-(use-package glsl-mode
-  :load-path "local/")
-
-(use-package flycheck-odin
-  :load-path "local/"
-  :commands (flycheck-odin-setup))
-
-(use-package flycheck-clang-unity
-  :load-path "local/"
-  :commands (flycheck-clang-unity-setup))
-
 ;; (use-package irony
 ;;   :init
 ;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
@@ -274,25 +257,35 @@
 
 
 (use-package tide
-  :init
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  :ensure t
   :config
-  (evil-define-key 'normal typescript-mode-map
+  (evil-define-key 'normal tide-mode-map
     (kbd "C-]") 'tide-jump-to-definition
     (kbd "C-t") 'tide-jump-back)
+  (evil-leader/set-key
+    "tf" 'tide-fix)
+  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
+  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint)
+  :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
-         (typescript-mode . add-node-modules-path)
-         (typescript-mode . flycheck-mode)
          (typescript-mode . company-mode)
-         (typescript-mode . eldoc-mode)
-         (typescript-mode . (lambda () (highlight-symbol-mode 0)))
-         (typescript-mode . tide-hl-identifier-mode)))
+         (typescript-mode . flycheck-mode)
+         (typescript-mode . tide-hl-identifier-mode)
+         (typescript-mode . add-node-modules-path)))
+
+(use-package web-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  :hook ((web-mode . (lambda ()
+                       (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                         (tide-setup))))
+         (web-mode . flycheck-mode)))
 
 ;; Deals with race condition between flycheck checking stuff and creating a file
 ;; which webpack sees and tries to process
 ;; which flycheck then deletes causing an error in webpack
-(eval-after-load 'flycheck
-  '(setcar (memq 'source-inplace (flycheck-checker-get 'typescript-tslint 'command)) 'source-original))
+;; (eval-after-load 'flycheck
+;;   '(setcar (memq 'source-inplace (flycheck-checker-get 'typescript-tslint 'command)) 'source-original))
 
 
 (ensure-package-installed
@@ -322,7 +315,6 @@
  'helm-projectile
  ;; 'fill-column-indicator
 
- ;; 'web-mode
  'rjsx-mode
 
  'add-node-modules-path
@@ -520,7 +512,7 @@
 
 ;; there are some expansion conflicts I don't feel like dealing with
 (require 'elpy)
-;; (delete 'elpy-module-yasnippet elpy-modules)
+(delete 'elpy-module-yasnippet elpy-modules)
 (elpy-enable)
 (add-hook 'elpy-mode-hook
   (lambda ()
@@ -717,10 +709,10 @@
 (setq flycheck-check-syntax-automatically '(mode-enabled save new-line))
 ;; (eval-after-load 'flycheck
 ;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-odin-setup))
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-clang-unity-setup))
+;; (eval-after-load 'flycheck
+;;   '(add-hook 'flycheck-mode-hook #'flycheck-odin-setup))
+;; (eval-after-load 'flycheck
+;;   '(add-hook 'flycheck-mode-hook #'flycheck-clang-unity-setup))
 
 ;; (require 'midnight)
 ;; (setq midnight-period (* 60 60))
