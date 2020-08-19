@@ -25,7 +25,7 @@ curl -L https://github.com/hbin/top-programming-fonts/raw/c9bc56a2400447e85c2391
 ln -s .dotfiles/.bashrc .bashrc
 ln -s .dotfiles/.bash_profile .bash_profile
 ln -s .dotfiles/.profile .profile
-rm -f .bash_profile .bash_login
+rm -f .bash_login
 
 ln -s .dotfiles/.inputrc .inputrc
 
